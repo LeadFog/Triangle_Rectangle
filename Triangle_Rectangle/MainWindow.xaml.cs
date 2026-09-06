@@ -17,19 +17,37 @@ namespace Triangle_Rectangle
     public partial class MainWindow : Window
     {
         Triangle tr;
+        MyRectangle rt;
         Random rnd = new Random();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Point p1 = new Point(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point p2 = new Point(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point p3 = new Point(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            int maxX = 600;
+            int maxY = 400;
+
+            Point p1 = new Point(rnd.Next(50, maxX), rnd.Next(50, maxY));
+            Point p2 = new Point(rnd.Next(50, maxX), rnd.Next(50, maxY));
+            Point p3 = new Point(rnd.Next(50, maxX), rnd.Next(50, maxY));
             tr = new Triangle(p1, p2, p3);
 
+            // Создаём ПРЯМОУГОЛЬНИК (не 4 случайные точки!)
+            int rectX = rnd.Next(50, maxX - 150);
+            int rectY = rnd.Next(50, maxY - 100);
+            int rectWidth = 150;
+            int rectHeight = 100;
+
+            Point rp1 = new Point(rectX, rectY); // Левый верхний
+            Point rp2 = new Point(rectX + rectWidth, rectY); // Правый верхний
+            Point rp3 = new Point(rectX + rectWidth, rectY + rectHeight); // Правый нижний
+            Point rp4 = new Point(rectX, rectY + rectHeight); // Левый нижний
+            rt = new MyRectangle(rp1, rp2, rp3, rp4);
+
             // Рисуем его
-            tr = new Triangle(p1, p2, p3);
+            DrawTriangle(tr);
+            DrawRectangle(rt);
+
         }
 
         public void DrawLine(Point p1, Point p2)
@@ -55,6 +73,15 @@ namespace Triangle_Rectangle
             DrawLine(tr.P1, tr.P2);
             DrawLine(tr.P2, tr.P3);
             DrawLine(tr.P3, tr.P1);
+        }
+
+        public void DrawRectangle(MyRectangle rp)
+        {
+            //Отрисовка треугольника с помощью функции отрисовки линии
+            DrawLine(rp.P1, rp.P2);
+            DrawLine(rp.P2, rp.P3);
+            DrawLine(rp.P3, rp.P4);
+            DrawLine(rp.P4, rp.P1);
         }
 
         public void ClearScene()

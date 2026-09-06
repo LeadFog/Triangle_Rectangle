@@ -7,7 +7,50 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="400" Margin="15,0,0,0"
-VerticalAlignment="Center" Width="680"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Панель управления слева -->
+        <Border Grid.Column="0" Background="#F0F0F0" Padding="10" BorderBrush="#CCCCCC" BorderThickness="0,0,1,0">
+            <StackPanel>
+                <TextBlock Text="Управление" FontWeight="Bold" FontSize="16" 
+                           Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                <!-- Кнопка переключения фигуры -->
+                <TextBlock Text="Активная фигура:" Margin="0,0,0,5" FontSize="12"/>
+                <TextBlock x:Name="ActiveFigureText" Text="Треугольник" 
+                           FontWeight="Bold" Foreground="Red" Margin="0,0,0,15"
+                           HorizontalAlignment="Center"/>
+
+                <Button Content="Сменить фигуру" Click="SwitchFigure_Click" 
+                        Padding="10,8" Margin="0,0,0,20"/>
+
+                <!-- Кнопки перемещения -->
+                <TextBlock Text="Перемещение:" Margin="0,0,0,10" FontWeight="Bold"/>
+
+                <!-- Кнопка ВВЕРХ -->
+                <Button Content="▲ Вверх" Click="MoveUp_Click" 
+                        Padding="10,8" Margin="0,0,0,5"/>
+
+                <!-- Кнопка ВЛЕВО -->
+                <Button Content="< Влево" Click="MoveLeft_Click" 
+                        Padding="10,8" Margin="0,0,0,5"/>
+
+                <!-- Кнопка ВПРАВО -->
+                <Button Content="> Вправо" Click="MoveRight_Click" 
+                        Padding="10,8" Margin="0,0,0,5"/>
+
+                <!-- Кнопка ВНИЗ -->
+                <Button Content="▼ Вниз" Click="MoveDown_Click" 
+                        Padding="10,8" Margin="0,0,0,15"/>
+
+
+            </StackPanel>
+        </Border>
+
+        <!-- Холст для рисования -->
+        <Canvas x:Name="Scene" Grid.Column="1" Background="White" Margin="10"/>
     </Grid>
 </Window>

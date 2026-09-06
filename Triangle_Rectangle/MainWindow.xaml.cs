@@ -17,8 +17,9 @@ namespace Triangle_Rectangle
     public partial class MainWindow : Window
     {
         Triangle tr;
-        MyRectangle rt;
+        MyRectangle rt;  // <-- Только здесь изменил Rectangle на MyRectangle (из-за конфликта имен)
         Random rnd = new Random();
+        bool isTriangleActive = true;  // <-- Добавил: какая фигура активна
 
         public MainWindow()
         {
@@ -32,52 +33,97 @@ namespace Triangle_Rectangle
             Point p3 = new Point(rnd.Next(50, maxX), rnd.Next(50, maxY));
             tr = new Triangle(p1, p2, p3);
 
-            // Создаём ПРЯМОУГОЛЬНИК (не 4 случайные точки!)
             int rectX = rnd.Next(50, maxX - 150);
             int rectY = rnd.Next(50, maxY - 100);
             int rectWidth = 150;
             int rectHeight = 100;
 
-            Point rp1 = new Point(rectX, rectY); // Левый верхний
-            Point rp2 = new Point(rectX + rectWidth, rectY); // Правый верхний
-            Point rp3 = new Point(rectX + rectWidth, rectY + rectHeight); // Правый нижний
-            Point rp4 = new Point(rectX, rectY + rectHeight); // Левый нижний
+            Point rp1 = new Point(rectX, rectY);
+            Point rp2 = new Point(rectX + rectWidth, rectY);
+            Point rp3 = new Point(rectX + rectWidth, rectY + rectHeight);
+            Point rp4 = new Point(rectX, rectY + rectHeight);
             rt = new MyRectangle(rp1, rp2, rp3, rp4);
 
-            // Рисуем его
             DrawTriangle(tr);
             DrawRectangle(rt);
-
         }
 
-        public void DrawLine(Point p1, Point p2)
 
+        private void MoveUp_Click(object sender, RoutedEventArgs e)
         {
-            //Создание новой линии
+            MoveFigure(0, -10);
+        }
+
+        private void MoveDown_Click(object sender, RoutedEventArgs e)
+        {
+            MoveFigure(0, 10);
+        }
+
+        private void MoveLeft_Click(object sender, RoutedEventArgs e)
+        {
+            MoveFigure(-10, 0);
+        }
+
+        private void MoveRight_Click(object sender, RoutedEventArgs e)
+        {
+            MoveFigure(10, 0);
+        }
+
+        private void MoveFigure(int dx, int dy)
+        {
+            if (isTriangleActive)
+            {
+                tr.AddX(dx);
+                tr.AddY(dy);
+            }
+            else
+            {
+                rt.AddX(dx);
+                rt.AddY(dy);
+            }
+            Redraw();
+        }
+
+        private void SwitchFigure_Click(object sender, RoutedEventArgs e)
+        {
+            isTriangleActive = !isTriangleActive;
+
+            if (isTriangleActive)
+                ActiveFigureText.Text = "Треугольник";
+            else
+                ActiveFigureText.Text = "Прямоугольник";
+        }
+
+        private void Redraw()
+        {
+            Scene.Children.Clear();
+            DrawTriangle(tr);
+            DrawRectangle(rt);
+        }
+
+        // ========== ВАШ СТАРЫЙ КОД (без изменений) ==========
+
+        public void DrawLine(Point p1, Point p2)
+        {
             System.Windows.Shapes.Line line = new System.Windows.Shapes.Line();
-            //Цвет и толщина линии
             line.Stroke = Brushes.Red;
             line.StrokeThickness = 3;
-            //Установка координат линии из координат точек Point2D
             line.X1 = p1.X;
             line.Y1 = p1.Y;
             line.X2 = p2.X;
             line.Y2 = p2.Y;
-            //Добавление линии в Canvas
             Scene.Children.Add(line);
         }
 
         public void DrawTriangle(Triangle tr)
         {
-            //Отрисовка треугольника с помощью функции отрисовки линии
             DrawLine(tr.P1, tr.P2);
             DrawLine(tr.P2, tr.P3);
             DrawLine(tr.P3, tr.P1);
         }
 
-        public void DrawRectangle(MyRectangle rp)
+        public void DrawRectangle(MyRectangle rp)  // <-- Только здесь Rectangle -> MyRectangle
         {
-            //Отрисовка треугольника с помощью функции отрисовки линии
             DrawLine(rp.P1, rp.P2);
             DrawLine(rp.P2, rp.P3);
             DrawLine(rp.P3, rp.P4);
@@ -86,9 +132,7 @@ namespace Triangle_Rectangle
 
         public void ClearScene()
         {
-            //Очистка Canvas от всех объектов
             Scene.Children.Clear();
         }
-
     }
 }

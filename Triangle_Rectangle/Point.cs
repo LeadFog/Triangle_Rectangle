@@ -21,7 +21,7 @@ namespace Triangle_Rectangle
             X += x;
         }
 
-        public int AddY(int y) 
+        public void AddY(int y) 
         {
             Y += y; 
         }
